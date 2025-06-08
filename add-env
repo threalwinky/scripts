@@ -1,0 +1,21 @@
+#!/bin/python3
+import sys
+import json
+import os
+
+env_file = os.path.realpath("/bin/env-list").replace("env-list","")+".env"
+if (len(sys.argv) < 3):
+    print("Not enough argruments")
+    exit()
+if (len(sys.argv) > 3):
+    env_file = sys.argv[3]
+key = sys.argv[1]
+value = sys.argv[2]
+obj = {}
+try:
+    obj = json.load(open(env_file))
+except Exception as e:
+    pass
+obj[key] = value
+with open(env_file, "w") as f:
+    f.write(json.dumps(obj))

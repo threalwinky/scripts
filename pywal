@@ -1,0 +1,10 @@
+#!/bin/sh
+wallpaper=$1
+pwd=$(pwd)
+python3 /bin/wallpaper $pwd/$1
+sway reload
+wal -i $1
+killall waybar
+cp $HOME/.cache/wal/colors-waybar.css ~/.config/waybar/style-wal.css
+cp ~/.cache/wal/colors-rofi-light.rasi ~/.config/rofi/themes
+wal -R

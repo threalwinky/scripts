@@ -1,0 +1,13 @@
+#!/bin/python3
+import sys
+from pathlib import Path
+import re
+
+path = Path("~/.config/sway/config").expanduser()
+file = open(path)
+bg = Path(sys.argv[1]).expanduser()
+content = file.read()
+content = re.sub(r'^(set \$wallpaper )\S+', r'set $wallpaper ' + str(bg), content, flags=re.MULTILINE)
+print(content)
+with open(path, "w") as f:
+    f.write(content)

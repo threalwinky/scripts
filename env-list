@@ -1,0 +1,16 @@
+#!/bin/python3
+import sys
+import json
+from pathlib import Path
+import os
+
+env_file = os.path.realpath("/bin/env-list").replace("env-list","")+".env"
+if (len(sys.argv) > 1):
+    env_file = sys.argv[1]
+obj = {}
+try:
+    obj = json.load(open(env_file))
+except:
+    pass
+for key in obj:
+    print(f"{key}: {obj[key]}")

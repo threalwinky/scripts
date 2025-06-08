@@ -1,0 +1,12 @@
+#!/bin/sh
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 
+   exit 1
+fi
+
+for f in *; do
+    [ "$f" = "symlink" ] && continue
+    [ "$f" = ".env" ] && continue
+    target=/bin
+    rm $target/$f
+done

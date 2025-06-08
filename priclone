@@ -1,0 +1,34 @@
+#!/bin/python3
+import sys
+import json
+from pathlib import Path
+import os
+from pwn import *
+
+env_file = os.path.realpath("/bin/env-list").replace("env-list","")+".env"
+if (len(sys.argv) > 2):
+    env_file = sys.argv[2]
+if (len(sys.argv) < 2):
+    print("No git repo url")
+    exit()
+url = sys.argv[1]
+obj = {}
+
+try:
+    obj = json.load(open(env_file))
+    username = obj["username"]
+    key = obj["key"]
+except Exception as e:
+    print("Failed to load credentials:", e)
+    exit(1)
+
+if url.startswith("https://"):
+    authenticated_url = url.replace("https://", f"https://{username}:{key}@")
+else:
+    print("Only https:// URLs are supported")
+    exit(1)
+try:
+    subprocess.run(["git", "clone", authenticated_url], check=True)
+    print("Clone successful")
+except subprocess.CalledProcessError:
+    print("Clone failed")
